@@ -38,6 +38,7 @@
                 @csrf
                 
                 <!-- Submitter Information -->
+                @if(!$form->is_anonymous)
                 <div class="border-t pt-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Pengguna</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -66,6 +67,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 <!-- Dynamic Form Fields -->
                 <div class="border-t pt-6">

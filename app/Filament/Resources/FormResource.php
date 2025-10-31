@@ -87,6 +87,11 @@ class FormResource extends Resource
                                     ->label('Izinkan Pengisian Berulang')
                                     ->default(true),
 
+                                Toggle::make('is_anonymous')
+                                    ->label('Anonim')
+                                    ->default(false)
+                                    ->helperText('Jika diaktifkan, data nama, email, nomor telepon, dan alamat IP tidak akan disimpan'),
+
                                 TextInput::make('submission_limit')
                                     ->label('Batas Pengisian')
                                     ->numeric()

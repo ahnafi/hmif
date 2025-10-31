@@ -30,7 +30,7 @@ class FormController extends Controller
         }
         
         // Check if user already submitted and multiple submissions not allowed
-        if (!$form->allow_multiple_submissions) {
+        if (!$form->allow_multiple_submissions && !$form->is_anonymous) {
             $existingSubmission = FormSubmission::where('form_id', $form->id)
                 ->where('submitted_by_email', $request->input('submitted_by_email'))
                 ->exists();
@@ -41,7 +41,7 @@ class FormController extends Controller
         }
         
         // Validate form data
-        $rules = $this->buildValidationRules($form->fields);
+        $rules = $this->buildValidationRules($form->fields, $form->is_anonymous);
         $validator = Validator::make($request->all(), $rules);
         
         if ($validator->fails()) {
@@ -75,14 +75,20 @@ class FormController extends Controller
         }
         
         // Create submission
-        FormSubmission::create([
+        $submissionData = [
             'form_id' => $form->id,
             'data' => $formData,
-            'submitted_by_name' => $request->input('submitted_by_name'),
-            'submitted_by_email' => $request->input('submitted_by_email'),
-            'submitted_by_phone' => $request->input('submitted_by_phone'),
-            'ip_address' => $request->ip(),
-        ]);
+        ];
+        
+        // Only save personal info if not anonymous
+        if (!$form->is_anonymous) {
+            $submissionData['submitted_by_name'] = $request->input('submitted_by_name');
+            $submissionData['submitted_by_email'] = $request->input('submitted_by_email');
+            $submissionData['submitted_by_phone'] = $request->input('submitted_by_phone');
+            $submissionData['ip_address'] = $request->ip();
+        }
+        
+        FormSubmission::create($submissionData);
         
         // Return success response with optional redirect URL
         $response = ['success' => 'Form submitted successfully'];
@@ -94,9 +100,15 @@ class FormController extends Controller
         return response()->json($response);
     }
     
-    private function buildValidationRules(array $fields): array
+    private function buildValidationRules(array $fields, bool $isAnonymous = false): array
     {
         $rules = [];
+        
+        // Add rules for personal info fields if not anonymous
+        if (!$isAnonymous) {
+            $rules['submitted_by_name'] = 'required|string';
+            $rules['submitted_by_email'] = 'required|email';
+        }
         
         foreach ($fields as $field) {
             if (!isset($field['type']) || in_array($field['type'], ['heading', 'paragraph'])) {
