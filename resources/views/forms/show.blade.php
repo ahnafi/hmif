@@ -47,7 +47,7 @@
                                 Nama *
                             </label>
                             <input type="text" id="submitted_by_name" name="submitted_by_name" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                         </div>
                         
                         <div>
@@ -55,7 +55,7 @@
                                 Email *
                             </label>
                             <input type="email" id="submitted_by_email" name="submitted_by_email" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                         </div>
                         
                         <div class="md:col-span-2">
@@ -63,7 +63,7 @@
                                 Nomor Telepon
                             </label>
                             <input type="tel" id="submitted_by_phone" name="submitted_by_phone"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                                                    name="{{ $fieldName }}"
                                                    placeholder="{{ $field['placeholder'] ?? '' }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                                             @break
                                         
                                         @case('textarea')
@@ -117,7 +117,7 @@
                                                       placeholder="{{ $field['placeholder'] ?? '' }}"
                                                       rows="4"
                                                       @if($field['required'] ?? false) required @endif
-                                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"></textarea>
                                             @break
                                         
                                         @case('date')
@@ -125,14 +125,14 @@
                                                    id="{{ $fieldName }}" 
                                                    name="{{ $fieldName }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                                             @break
                                         
                                         @case('select')
                                             <select id="{{ $fieldName }}" 
                                                     name="{{ $fieldName }}"
                                                     @if($field['required'] ?? false) required @endif
-                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                                                 <option value="">Pilih opsi...</option>
                                                 @foreach($field['options'] ?? [] as $option)
                                                     <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
@@ -178,7 +178,7 @@
                                                    id="{{ $fieldName }}" 
                                                    name="{{ $fieldName }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
                                             @break
                                     @endswitch
                                 </div>
