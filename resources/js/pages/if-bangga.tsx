@@ -7,6 +7,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 interface Student {
     id: number;
+    nim: string;
     name: string;
     student_id: string;
 }
@@ -30,7 +31,7 @@ interface Achievement {
     id: number;
     name: string;
     description?: string;
-    image?: string;
+    images?: string[];
     proof?: string;
     awarded_at: string;
     approval: boolean;
@@ -89,6 +90,8 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
     const [selectedCategory, setSelectedCategory] = useState(filters.category || 'all');
     const [selectedLevel, setSelectedLevel] = useState(filters.level || 'all');
     const [selectedYear, setSelectedYear] = useState(filters.year || 'all');
+
+    console.log("Students Achievements:", achievements);
 
     // Debounced search
     const debouncedSearch = useDebouncedCallback(() => {
@@ -509,9 +512,9 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                                     >
                                         {/* Achievement Image */}
                                         <div className="relative h-48 overflow-hidden">
-                                            {achievement.image ? (
+                                            {achievement.images ? (
                                                 <img
-                                                    src={achievement.image ? `/storage/${achievement.image}` : '/img/placeholder/if-bangga.png'}
+                                                    src={achievement.images[0] ? `/storage/${achievement.images[0]}` : '/img/placeholder/if-bangga.png'}
                                                     alt={achievement.name}
                                                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                                 />
@@ -559,7 +562,7 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                                                 <div className="space-y-1">
                                                     {achievement.students.slice(0, 3).map((student) => (
                                                         <div key={student.id} className="text-sm text-gray-600 dark:text-gray-400">
-                                                            {student.name} ({student.student_id})
+                                                            {student.name} ({student.nim})
                                                         </div>
                                                     ))}
                                                     {achievement.students.length > 3 && (
