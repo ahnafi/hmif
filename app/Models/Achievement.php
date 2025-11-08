@@ -18,13 +18,17 @@ class Achievement extends Model
         'name',
         'organizer',
         'description',
-        'image',
+        'images',
         'proof',
         'awarded_at',
         'approval',
         'achievement_type_id',
         'achievement_category_id',
         'achievement_level_id',
+    ];
+
+    protected $casts = [
+      'images' => 'array',
     ];
 
     public function achievementType(): BelongsTo

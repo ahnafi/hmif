@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string("organizer");
             $table->text('description');
-            $table->string('image');
-            $table->string('proof')->nullable();
-            $table->date('awarded_at')->nullable();
-            $table->boolean('approval')->nullable()->default(null);
+            $table->text('images');
+            $table->string('proof');
+            $table->date('awarded_at');
+            $table->boolean('approval')->default(null);
             $table->foreignId('achievement_type_id')->constrained('achievement_types');
             $table->foreignId('achievement_category_id')->constrained('achievement_categories');
             $table->foreignId('achievement_level_id')->constrained('achievement_levels');
