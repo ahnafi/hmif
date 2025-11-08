@@ -19,13 +19,16 @@ class MikatCashResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Kas Mikat';
+    protected static ?string $modelLabel = 'Kas Mikat';
+    protected static ?string $label = 'Kas Mikat';
+    protected static ?string $pluralLabel = 'Kas Mikat';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('administrator_id')
-                    ->label('Administrator')
+                    ->label('Pengurus')
                     ->relationship('administrator', 'name', fn (Builder $query) => 
                         $query->whereHas('division', fn (Builder $query) => 
                             $query->where('slug', 'minat-dan-bakat')
@@ -62,7 +65,7 @@ class MikatCashResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('administrator.name')
-                    ->label('Administrator')
+                    ->label('Pengurus')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')

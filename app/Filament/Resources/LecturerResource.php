@@ -20,6 +20,10 @@ class LecturerResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?string $navigationLabel = 'Dosen';
     protected static ?string $navigationGroup = "Manajemen Dosen";
+    protected static ?string $recordTitleAttribute = 'nama';
+    protected static ?string $modelLabel = 'Dosen';
+    protected static ?string $label = 'Dosen';
+    protected static ?string $pluralLabel = 'Dosen';
 
     public static function form(Form $form): Form
     {

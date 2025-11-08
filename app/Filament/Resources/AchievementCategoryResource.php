@@ -20,6 +20,10 @@ class AchievementCategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?string $navigationLabel = 'Kategori Prestasi';
     protected static ?string $navigationGroup = 'Database IF Bangga';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Kategori Prestasi';
+    protected static ?string $label = 'Kategori Prestasi';
+    protected static ?string $pluralLabel = 'Kategori Prestasi';
 
     public static function form(Form $form): Form
     {

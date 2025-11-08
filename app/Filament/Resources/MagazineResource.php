@@ -19,6 +19,10 @@ class MagazineResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = 'Majalah';
     protected static ?string $navigationGroup = 'Manajemen I-Magz';
+    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $modelLabel = 'Majalah';
+    protected static ?string $label = 'Majalah';
+    protected static ?string $pluralLabel = 'Majalah';
 
     public static function form(Form $form): Form
     {

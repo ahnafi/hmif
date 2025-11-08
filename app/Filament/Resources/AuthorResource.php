@@ -20,6 +20,10 @@ class AuthorResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationLabel = 'Penulis';
     protected static ?string $navigationGroup = 'Manajemen Artikel';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Penulis';
+    protected static ?string $label = 'Penulis';
+    protected static ?string $pluralLabel = 'Penulis';
 
     public static function form(Form $form): Form
     {

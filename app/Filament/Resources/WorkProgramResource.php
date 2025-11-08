@@ -20,6 +20,10 @@ class WorkProgramResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationLabel = 'Program Kerja';
     protected static ?string $navigationGroup = 'Struktur Organisasi';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Program Kerja';
+    protected static ?string $label = 'Program Kerja';
+    protected static ?string $pluralLabel = 'Program Kerja';
 
     public static function form(Form $form): Form
     {

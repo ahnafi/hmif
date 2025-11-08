@@ -16,10 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AchievementLevelResource extends Resource
 {
     protected static ?string $model = AchievementLevel::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
     protected static ?string $navigationLabel = 'Tingkat Prestasi';
     protected static ?string $navigationGroup = 'Database IF Bangga';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Tingkat Prestasi';
+    protected static ?string $label = 'Tingkat Prestasi';
+    protected static ?string $pluralLabel = 'Tingkat Prestasi';
 
     public static function form(Form $form): Form
     {

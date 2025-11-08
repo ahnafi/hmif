@@ -15,10 +15,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class AchievementResource extends Resource
 {
     protected static ?string $model = Achievement::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-trophy';
-    protected static ?string $navigationLabel = 'Prestasi';
+    protected static ?string $navigationLabel = 'Prestasi IF Bangga';
     protected static ?string $navigationGroup = 'Database IF Bangga';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Prestasi IF Bangga';
+    protected static ?string $label = 'Prestasi IF Bangga';
+    protected static ?string $pluralLabel = 'Prestasi IF Bangga';
 
     public static function form(Form $form): Form
     {
@@ -42,20 +45,23 @@ class AchievementResource extends Resource
                     ->label('Deskripsi')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image')
+                Forms\Components\FileUpload::make('images')
                     ->label('Gambar')
+                    ->previewable()
+                    ->multiple()
                     ->openable()
-                    ->downloadable()
                     ->directory('ifbangga-image')
                     ->image()
+                    ->maxFiles(3)
+                    ->maxSize(1024)
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('proof')
                     ->label('Bukti')
+                    ->previewable()
                     ->openable()
-                    ->downloadable()
+                    ->maxSize(1024)
                     ->directory('ifbangga-proof')
-                    ->image()
                     ->columnSpanFull(),
                 Forms\Components\DatePicker::make('awarded_at')
                     ->label('Tanggal Penghargaan'),

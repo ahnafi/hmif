@@ -20,6 +20,9 @@ class CashResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-wallet';
     protected static ?string $navigationLabel = 'Kas';
     protected static ?string $navigationGroup = 'Kas dan Deposit';
+    protected static ?string $modelLabel = 'Kas';
+    protected static ?string $label = 'Kas';
+    protected static ?string $pluralLabel = 'Kas';
 
     public static function form(Form $form): Form
     {

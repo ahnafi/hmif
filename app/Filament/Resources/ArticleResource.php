@@ -20,6 +20,10 @@ class ArticleResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
     protected static ?string $navigationLabel = 'Artikel';
     protected static ?string $navigationGroup = 'Manajemen Artikel';
+    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $modelLabel = 'Artikel';
+    protected static ?string $label = 'Artikel';
+    protected static ?string $pluralLabel = 'Artikel';
 
     public static function form(Form $form): Form
     {

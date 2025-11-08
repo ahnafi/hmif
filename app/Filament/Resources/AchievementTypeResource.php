@@ -20,6 +20,10 @@ class AchievementTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
     protected static ?string $navigationLabel = 'Tipe Prestasi';
     protected static ?string $navigationGroup = 'Database IF Bangga';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Tipe Prestasi';
+    protected static ?string $label = 'Tipe Prestasi';
+    protected static ?string $pluralLabel = 'Tipe Prestasi';
 
     public static function form(Form $form): Form
     {

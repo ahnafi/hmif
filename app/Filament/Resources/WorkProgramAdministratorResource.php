@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class WorkProgramAdministratorResource extends Resource
 {
     protected static ?string $model = WorkProgramAdministrator::class;
+    protected static ?string $modelLabel = 'Pengurus Program Kerja';
+    protected static ?string $label = 'Pengurus Program Kerja';
+    protected static ?string $pluralLabel = 'Pengurus Program Kerja';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationLabel = 'Program Kerja';

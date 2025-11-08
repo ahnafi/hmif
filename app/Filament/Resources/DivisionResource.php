@@ -20,6 +20,10 @@ class DivisionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
     protected static ?string $navigationLabel = 'Divisi';
     protected static ?string $navigationGroup = 'Struktur Organisasi';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Divisi';
+    protected static ?string $label = 'Divisi';
+    protected static ?string $pluralLabel = 'Divisi';
 
     public static function form(Form $form): Form
     {

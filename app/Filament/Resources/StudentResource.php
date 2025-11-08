@@ -21,6 +21,11 @@ class StudentResource extends Resource
     protected static ?string $navigationLabel = 'Mahasiswa';
     protected static ?string $navigationGroup = 'Database IF Bangga';
 
+    protected static ?string $recordTitleAttribute = 'nim';
+    protected static ?string $modelLabel = 'Mahasiswa';
+    protected static ?string $label = 'Mahasiswa';
+    protected static ?string $pluralLabel = 'Mahasiswa';
+
     public static function form(Form $form): Form
     {
         return $form

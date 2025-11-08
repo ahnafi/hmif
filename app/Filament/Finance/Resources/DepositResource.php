@@ -20,6 +20,9 @@ class DepositResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationLabel = 'Deposit';
     protected static ?string $navigationGroup = 'Kas dan Deposit';
+    protected static ?string $modelLabel = 'Deposit';
+    protected static ?string $label = 'Deposit';
+    protected static ?string $pluralLabel = 'Deposit';
 
     public static function form(Form $form): Form
     {

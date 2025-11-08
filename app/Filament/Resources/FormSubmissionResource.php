@@ -26,7 +26,11 @@ class FormSubmissionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
     protected static ?string $navigationLabel = 'Hasil Pengisian';
     protected static ?string $navigationGroup = 'Form Builder';
-    
+    protected static ?string $recordTitleAttribute = 'nim';
+    protected static ?string $modelLabel = 'Hasil Pengisian';
+    protected static ?string $label = 'Hasil Pengisian';
+    protected static ?string $pluralLabel = 'Hasil Pengisian';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(FilamentForm $form): FilamentForm

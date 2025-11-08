@@ -40,6 +40,11 @@ class FormResource extends Resource
 
     protected static ?string $navigationGroup = 'Form Builder';
 
+    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $modelLabel = 'Formulir';
+    protected static ?string $label = 'Formulir';
+    protected static ?string $pluralLabel = 'Formulir';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(FilamentForm $form): FilamentForm

@@ -20,6 +20,10 @@ class DownloadResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
     protected static ?string $navigationLabel = 'Unduhan';
     protected static ?string $navigationGroup = 'Manajemen Unduhan';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Unduhan';
+    protected static ?string $label = 'Unduhan';
+    protected static ?string $pluralLabel = 'Unduhan';
 
     public static function form(Form $form): Form
     {

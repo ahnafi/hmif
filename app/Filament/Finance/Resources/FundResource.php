@@ -19,6 +19,10 @@ class FundResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Dana';
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Dana';
+    protected static ?string $label = 'Dana';
+    protected static ?string $pluralLabel = 'Dana';
 
     public static function form(Form $form): Form
     {

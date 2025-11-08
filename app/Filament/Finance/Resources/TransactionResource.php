@@ -19,6 +19,9 @@ class TransactionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
     protected static ?string $navigationLabel = 'Transaksi';
+    protected static ?string $modelLabel = 'Transaksi';
+    protected static ?string $label = 'Transaksi';
+    protected static ?string $pluralLabel = 'Transaksi';
 
     public static function form(Form $form): Form
     {

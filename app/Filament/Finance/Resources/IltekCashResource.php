@@ -20,13 +20,16 @@ class IltekCashResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationLabel = 'Kas Iltek';
     protected static ?string $navigationGroup = 'Kas Iltek';
+    protected static ?string $modelLabel = 'Kas Iltek';
+    protected static ?string $label = 'Kas Iltek';
+    protected static ?string $pluralLabel = 'Kas Iltek';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('administrator_id')
-                    ->label('Administrator')
+                    ->label('Pengurus')
                     ->relationship('administrator', 'name', fn (Builder $query) => 
                         $query->whereHas('division', fn (Builder $query) => 
                             $query->where('slug', 'keilmuan-dan-teknologi')
