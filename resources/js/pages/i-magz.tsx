@@ -386,7 +386,7 @@ export default function IMagzPage({ magazines }: IMagzProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-sm top-24"
+                    className="fixed inset-0 z-[999] flex flex-col bg-black/95 backdrop-blur-sm top-0"
                 >
                     {/* Header - Responsive */}
                     <div className="flex flex-col justify-between border-b border-gray-200 bg-white p-3 shadow-lg sm:flex-row sm:items-center sm:p-4 dark:border-gray-700 dark:bg-gray-800">
@@ -555,26 +555,6 @@ export default function IMagzPage({ magazines }: IMagzProps) {
                                 <ChevronLeft className="h-4 w-4" />
                                 Sebelumnya
                             </button>
-
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={zoomOut}
-                                    disabled={scale <= 0.5}
-                                    className="rounded-lg bg-gray-100 p-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700"
-                                >
-                                    <ZoomOut className="h-4 w-4" />
-                                </button>
-
-                                <span className="text-sm font-medium">{Math.round(scale * 100)}%</span>
-
-                                <button
-                                    onClick={zoomIn}
-                                    disabled={scale >= 3.0}
-                                    className="rounded-lg bg-gray-100 p-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-700"
-                                >
-                                    <ZoomIn className="h-4 w-4" />
-                                </button>
-                            </div>
 
                             <button
                                 onClick={nextPage}

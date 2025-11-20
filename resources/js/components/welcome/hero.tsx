@@ -7,7 +7,7 @@ export default function HeroSection() {
             className="section-padding-x relative scroll-mt-12 min-h-screen flex items-center bg-light-base bg-[url('/img/backgrounds/kabinet-arditasena.png')] bg-cover bg-center text-dark-base dark:bg-slate-950 dark:text-light-base bg-fixed pt-24 md:pt-20"
         >
             <div className="absolute inset-0 bg-light-base opacity-80 dark:bg-dark-base">
-                <div className="absolute top-0 left-0 -z-10 h-96 w-96 rounded-full bg-blue-400 opacity-30 blur-3xl"></div>
+                <div className="absolute top-0 left-0 -z-10 h-72 w-72 md:h-96 md:w-96 rounded-full bg-blue-400 opacity-30 blur-3xl"></div>
             </div>
             <div className="relative mx-auto flex max-w-screen-xl flex-row justify-between gap-8 items-center w-full py-20 md:py-0">
                 <motion.div
@@ -78,7 +78,7 @@ export default function HeroSection() {
                         </div>
                     </motion.div>
                 </motion.div>
-                <motion.div 
+                <motion.div
                     className="relative hidden lg:flex lg:items-center lg:justify-center w-full lg:w-1/3"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
