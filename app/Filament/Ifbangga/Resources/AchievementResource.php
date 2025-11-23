@@ -63,6 +63,7 @@ class AchievementResource extends Resource
                     ->directory('ifbangga-proof')
                     ->columnSpanFull(),
                 Forms\Components\DatePicker::make('awarded_at')
+                    ->required()
                     ->label('Tanggal Penghargaan'),
                 Forms\Components\Select::make('achievement_type_id')
                     ->label('Tipe Prestasi')

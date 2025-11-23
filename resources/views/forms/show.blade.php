@@ -9,24 +9,24 @@
     @vite(['resources/css/app.css', "resources/js/app.tsx"])
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body class="bg-gray-50 py-8">
+<body class="bg-gray-50 dark:bg-gray-900 py-8">
     <div class="max-w-2xl mx-auto px-4">
-        <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <!-- Form Header -->
             <div class="mb-6">
                 @if($form->thumbnail)
                     <img src="{{ Storage::url($form->thumbnail) }}" alt="{{ $form->title }}" class="w-full h-48 object-cover rounded-lg mb-4">
                 @endif
                 
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $form->title }}</h1>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $form->title }}</h1>
                 
                 @if($form->description)
-                    <p class="text-gray-600">{{ $form->description }}</p>
+                    <p class="text-gray-600 dark:text-gray-300">{{ $form->description }}</p>
                 @endif
                 
                 @if($form->end_date)
-                    <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-                        <p class="text-sm text-yellow-800">
+                    <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-md">
+                        <p class="text-sm text-yellow-800 dark:text-yellow-200">
                             <strong>Ditutup:</strong> {{ $form->end_date->format('d M Y, H:i') }}
                         </p>
                     </div>
@@ -39,39 +39,39 @@
                 
                 <!-- Submitter Information -->
                 @if(!$form->is_anonymous)
-                <div class="border-t pt-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Informasi Pengguna</h3>
+                <div class="border-t dark:border-gray-600 pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Data Diri</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="submitted_by_name" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="submitted_by_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nama *
                             </label>
                             <input type="text" id="submitted_by_name" name="submitted_by_name" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                         </div>
                         
                         <div>
-                            <label for="submitted_by_email" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="submitted_by_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Email *
                             </label>
                             <input type="email" id="submitted_by_email" name="submitted_by_email" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                         </div>
                         
                         <div class="md:col-span-2">
-                            <label for="submitted_by_phone" class="block text-sm font-medium text-gray-700 mb-1">
+                            <label for="submitted_by_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nomor Telepon
                             </label>
                             <input type="tel" id="submitted_by_phone" name="submitted_by_phone"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                         </div>
                     </div>
                 </div>
                 @endif
 
                 <!-- Dynamic Form Fields -->
-                <div class="border-t pt-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Form</h3>
+                <div class="border-t dark:border-gray-600 pt-6">
+                    {{-- <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Form</h3> --}}
                     <div class="space-y-4">
                         @foreach($form->fields as $field)
                             @php
@@ -80,15 +80,15 @@
                             
                             @if($field['type'] === 'heading')
                                 <div class="pt-4">
-                                    <h4 class="text-xl font-semibold text-gray-900">{{ $field['content'] }}</h4>
+                                    <h4 class="text-xl font-semibold text-gray-900 dark:text-white">{{ $field['content'] }}</h4>
                                 </div>
                             @elseif($field['type'] === 'paragraph')
-                                <div class="text-gray-600">
+                                <div class="text-gray-600 dark:text-gray-300">
                                     <p>{{ $field['content'] }}</p>
                                 </div>
                             @else
                                 <div>
-                                    <label for="{{ $fieldName }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    <label for="{{ $fieldName }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                         {{ $field['label'] }}
                                         @if($field['required'] ?? false)
                                             <span class="text-red-500">*</span>
@@ -96,7 +96,7 @@
                                     </label>
                                     
                                     @if($field['help_text'] ?? false)
-                                        <p class="text-sm text-gray-500 mb-2">{{ $field['help_text'] }}</p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">{{ $field['help_text'] }}</p>
                                     @endif
                                     
                                     @switch($field['type'])
@@ -108,7 +108,7 @@
                                                    name="{{ $fieldName }}"
                                                    placeholder="{{ $field['placeholder'] ?? '' }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                                             @break
                                         
                                         @case('textarea')
@@ -117,7 +117,7 @@
                                                       placeholder="{{ $field['placeholder'] ?? '' }}"
                                                       rows="4"
                                                       @if($field['required'] ?? false) required @endif
-                                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"></textarea>
+                                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black"></textarea>
                                             @break
                                         
                                         @case('date')
@@ -125,14 +125,14 @@
                                                    id="{{ $fieldName }}" 
                                                    name="{{ $fieldName }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                                             @break
                                         
                                         @case('select')
                                             <select id="{{ $fieldName }}" 
                                                     name="{{ $fieldName }}"
                                                     @if($field['required'] ?? false) required @endif
-                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                                                 <option value="">Pilih opsi...</option>
                                                 @foreach($field['options'] ?? [] as $option)
                                                     <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
@@ -149,7 +149,7 @@
                                                                value="{{ $option['value'] }}"
                                                                @if($field['required'] ?? false) required @endif
                                                                class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                                        <span class="text-sm text-gray-900">{{ $option['label'] }}</span>
+                                                        <span class="text-sm text-gray-900 dark:text-white">{{ $option['label'] }}</span>
                                                     </label>
                                                 @endforeach
                                             </div>
@@ -164,7 +164,7 @@
                                                                value="{{ $option['value'] }}"
                                                                @if($field['required'] ?? false) class="required-checkbox" @endif
                                                                class="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                                                        <span class="text-sm text-gray-900">{{ $option['label'] }}</span>
+                                                        <span class="text-sm text-gray-900 dark:text-white">{{ $option['label'] }}</span>
                                                     </label>
                                                 @endforeach
                                                 @if($field['required'] ?? false)
@@ -178,7 +178,7 @@
                                                    id="{{ $fieldName }}" 
                                                    name="{{ $fieldName }}"
                                                    @if($field['required'] ?? false) required @endif
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black">
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black dark:bg-white dark:text-black">
                                             @break
                                     @endswitch
                                 </div>
@@ -189,14 +189,14 @@
 
                 @if($form->redirect)
                     <div class="border-t pt-6">
-                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-md">
+                        <div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-md">
                             <div class="flex items-start">
                                 <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                                 </svg>
                                 <div>
-                                    <h4 class="text-sm font-semibold text-blue-900 mb-1">Informasi </h4>
-                                    <p class="text-sm text-blue-800">
+                                    <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">Informasi </h4>
+                                    <p class="text-sm text-blue-800 dark:text-blue-300">
                                         Setelah Anda mengirim form, Anda akan diarahkan secara otomatis dalam <strong>1-2 detik</strong> ke halaman berikutnya. Mohon tunggu sebentar.
                                     </p>
                                 </div>
@@ -206,7 +206,7 @@
                 @endif
 
                 <!-- Submit Button -->
-                <div class="border-t pt-6">
+                <div class="border-t dark:border-gray-600 pt-6">
                     <button type="submit" 
                             class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
                         <span id="submit-text">Kirim Form</span>

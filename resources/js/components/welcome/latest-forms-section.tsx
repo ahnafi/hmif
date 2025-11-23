@@ -8,7 +8,7 @@ interface Form {
     thumbnail: string | null;
     description: string;
     start_date: string;
-    end_date: string;
+    end_date: string | null;
     is_active: boolean;
 }
 
@@ -57,8 +57,6 @@ export default function LatestFormsSection({ forms }: LatestFormsSectionProps) {
                 {/* Grid of Form Cards */}
                 <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {forms.map((form, index) => {
-                        const daysRemaining = getDaysRemaining(form.end_date);
-                        
                         return (
                             <motion.div
                                 key={form.id}
@@ -119,10 +117,14 @@ export default function LatestFormsSection({ forms }: LatestFormsSectionProps) {
                                                 </p>
 
                                                 {/* Date Info */}
+                                                {form.end_date && (() => {
+                                                    const endDate = form.end_date!;
+                                                    const daysRemaining = getDaysRemaining(endDate);
+                                                    return (
                                                 <div className="space-y-2 mb-4">
                                                     <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                                                         <Calendar className="h-4 w-4 text-gray-400 dark:text-gray-500" />
-                                                        <span>Berakhir: {formatDate(form.end_date)}</span>
+                                                        <span>Berakhir: {formatDate(endDate)}</span>
                                                     </div>
                                                     <div className="flex items-center gap-2 text-sm">
                                                         <Clock className={`h-4 w-4 ${
@@ -143,6 +145,8 @@ export default function LatestFormsSection({ forms }: LatestFormsSectionProps) {
                                                         </span>
                                                     </div>
                                                 </div>
+                                                    );
+                                                })()}
 
                                                 {/* CTA Button */}
                                                 <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">

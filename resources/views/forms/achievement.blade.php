@@ -16,7 +16,15 @@
         }
         #student_dropdown::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 4px;
+        }
+        #student_dropdown::-webkit-scrollbar-track:window-inactive {
+            background: #f1f1f1;
+        }
+        .dark #student_dropdown::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        .dark #student_dropdown::-webkit-scrollbar-track:window-inactive {
+            background: #374151;
         }
         #student_dropdown::-webkit-scrollbar-thumb {
             background: #888;
@@ -25,13 +33,19 @@
         #student_dropdown::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        .dark #student_dropdown::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+        .dark #student_dropdown::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
     </style>
 </head>
-<body class="bg-gray-50 py-8">
+<body class="bg-gray-50 dark:bg-gray-900 py-8">
     <div class="max-w-2xl mx-auto px-4">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
             <!-- Fixed Header Image -->
-            <div class="w-full h-64 bg-gradient-to-r from-blue-600 to-blue-800 flex items-center justify-center">
+            <div class="w-full h-64 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-700 dark:to-blue-900 flex items-center justify-center">
                 <div class="text-center text-white px-4">
                     <h1 class="text-4xl font-bold mb-2">IF Bangga</h1>
                     <p class="text-xl">Form Pendaftaran Prestasi Mahasiswa</p>
@@ -41,8 +55,8 @@
             <!-- Form Content -->
             <div class="p-6">
                 <!-- Form Description -->
-                <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-                    <p class="text-sm text-blue-800">
+                <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-md">
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
                         <strong>Petunjuk:</strong> Silakan lengkapi form berikut untuk mendaftarkan prestasi Anda. 
                         Data yang Anda kirim akan diverifikasi oleh admin sebelum ditampilkan di website.
                     </p>
@@ -54,37 +68,37 @@
                     
                     <!-- Achievement Name -->
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Nama Prestasi <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="name" name="name" required
                             placeholder="Contoh: Juara 1 Lomba Web Design Nasional"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                     </div>
 
                     <!-- Organizer -->
                     <div>
-                        <label for="organizer" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="organizer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Penyelenggara/Organizer <span class="text-red-500">*</span>
                         </label>
                         <input type="text" id="organizer" name="organizer" required
                             placeholder="Contoh: HMIF, IEEE, Kementerian Pendidikan"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                     </div>
 
                     <!-- Students (NIM) -->
                     <div>
-                        <label for="student_search" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="student_search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Mahasiswa <span class="text-red-500">*</span>
                         </label>
-                        <p class="text-sm text-gray-500 mb-2">Cari dan pilih mahasiswa. Bisa memilih lebih dari satu mahasiswa.</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Cari dan pilih mahasiswa. Bisa memilih lebih dari satu mahasiswa.</p>
                         
                         <!-- Search Input -->
                         <div class="relative mb-2">
                             <input type="text" id="student_search" 
                                 placeholder="Cari berdasarkan NIM atau Nama..."
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <div id="student_dropdown" class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto hidden">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
+                            <div id="student_dropdown" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-y-auto hidden">
                                 <!-- Results will be populated here -->
                             </div>
                         </div>
@@ -97,42 +111,42 @@
                         <!-- Hidden input to store selected student IDs -->
                         <input type="hidden" id="student_nims" name="student_nims" required>
                         
-                        <p class="text-xs text-gray-500 mt-1">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                             <span id="selected_count">0</span> mahasiswa dipilih
                         </p>
                     </div>
 
                     <!-- Description -->
                     <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Deskripsi Prestasi <span class="text-red-500">*</span>
                         </label>
                         <textarea id="description" name="description" required rows="4"
                             placeholder="Jelaskan detail tentang prestasi ini..."
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black"></textarea>
                     </div>
 
                     <!-- Image Upload (Bukti Pertama) -->
                     <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Foto/Dokumentasi Prestasi (Diri atau Tim) <span class="text-red-500">*</span>
                         </label>
-                        <p class="text-sm text-gray-500 mb-2">Upload foto dokumentasi prestasi (format: JPG, PNG, JPEG, max 2MB)</p>
-                        <input type="file" id="image" name="image" required accept="image/jpeg,image/png,image/jpg"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                        <div id="image-preview" class="mt-2 hidden">
-                            <img src="" alt="Preview" class="w-full max-w-md h-48 object-cover rounded-md">
+                        <p class="text-sm text-gray-500 mb-2">Upload foto dokumentasi prestasi (format: JPG, PNG, JPEG, maksimal 3 foto, 1MB per foto)</p>
+                        <input type="file" id="image" name="image[]" required multiple accept="image/jpeg,image/png,image/jpg"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-white dark:text-black">
+                        <div id="image-preview" class="mt-2 hidden grid grid-cols-3 gap-2">
+                            <!-- Images will be appended here -->
                         </div>
                     </div>
 
                     <!-- Certificate Upload (Sertifikat) -->
                     <div>
-                        <label for="proof" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="proof" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Sertifikat/Bukti Prestasi
                         </label>
                         <p class="text-sm text-gray-500 mb-2">Upload sertifikat atau bukti prestasi (format: JPG, PNG, JPEG, max 2MB)</p>
                         <input type="file" id="proof" name="proof" accept="image/jpeg,image/png,image/jpg"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-white dark:text-black">
                         <div id="proof-preview" class="mt-2 hidden">
                             <img src="" alt="Preview" class="w-full max-w-md h-48 object-cover rounded-md">
                         </div>
@@ -140,20 +154,20 @@
 
                     <!-- Awarded Date -->
                     <div>
-                        <label for="awarded_at" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="awarded_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Tanggal Perolehan Prestasi
                         </label>
                         <input type="date" id="awarded_at" name="awarded_at"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                     </div>
 
                     <!-- Achievement Type -->
                     <div>
-                        <label for="achievement_type_id" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="achievement_type_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Jenis Prestasi <span class="text-red-500">*</span>
                         </label>
                         <select id="achievement_type_id" name="achievement_type_id" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                             <option value="">Pilih jenis prestasi...</option>
                             @foreach($types as $type)
                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -163,11 +177,11 @@
 
                     <!-- Achievement Category -->
                     <div>
-                        <label for="achievement_category_id" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="achievement_category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Kategori Prestasi <span class="text-red-500">*</span>
                         </label>
                         <select id="achievement_category_id" name="achievement_category_id" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                             <option value="">Pilih kategori prestasi...</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -177,11 +191,11 @@
 
                     <!-- Achievement Level -->
                     <div>
-                        <label for="achievement_level_id" class="block text-sm font-medium text-gray-700 mb-1">
+                        <label for="achievement_level_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Tingkat Prestasi <span class="text-red-500">*</span>
                         </label>
                         <select id="achievement_level_id" name="achievement_level_id" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                             <option value="">Pilih tingkat prestasi...</option>
                             @foreach($levels as $level)
                                 <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -190,7 +204,7 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="border-t pt-6">
+                    <div class="border-t dark:border-gray-600 pt-6">
                         <button type="submit" 
                                 class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
                             <span id="submit-text">Kirim Prestasi</span>
@@ -198,7 +212,7 @@
                         </button>
                     </div>
 
-                    <div class="text-sm text-gray-500 text-center">
+                    <div class="text-sm text-gray-500 dark:text-gray-400 text-center">
                         Data yang Anda kirim akan diverifikasi oleh admin terlebih dahulu sebelum ditampilkan.
                     </div>
                 </form>
@@ -241,15 +255,15 @@
             });
 
             if (filtered.length === 0) {
-                dropdown.innerHTML = '<div class="px-4 py-2 text-sm text-gray-500">Tidak ada mahasiswa ditemukan</div>';
+                dropdown.innerHTML = '<div class="px-4 py-2 text-sm text-gray-500 dark:text-gray-400">Tidak ada mahasiswa ditemukan</div>';
                 dropdown.classList.remove('hidden');
                 return;
             }
 
             dropdown.innerHTML = filtered.map(student => `
-                <div class="px-4 py-2 hover:bg-blue-50 cursor-pointer student-option" data-id="${student.id}" data-nim="${student.nim}" data-name="${student.name}">
+                <div class="px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer student-option" data-id="${student.id}" data-nim="${student.nim}" data-name="${student.name}">
                     <div class="font-medium text-sm">${student.nim}</div>
-                    <div class="text-xs text-gray-600">${student.name}</div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400">${student.name}</div>
                 </div>
             `).join('');
 
@@ -296,13 +310,13 @@
         function updateUI() {
             // Update selected students display
             if (selectedStudents.length === 0) {
-                selectedContainer.innerHTML = '<p class="text-sm text-gray-500 p-3 bg-gray-50 rounded-md">Belum ada mahasiswa dipilih</p>';
+                selectedContainer.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400 p-3 bg-gray-50 dark:bg-gray-800 rounded-md">Belum ada mahasiswa dipilih</p>';
             } else {
                 selectedContainer.innerHTML = selectedStudents.map(student => `
-                    <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-md">
                         <div>
                             <div class="font-medium text-sm">${student.nim}</div>
-                            <div class="text-xs text-gray-600">${student.name}</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400">${student.name}</div>
                         </div>
                         <button type="button" onclick="removeStudent(${student.id})" 
                             class="text-red-500 hover:text-red-700 focus:outline-none">
@@ -334,23 +348,50 @@
 
         // Image Preview for 'image' field
         document.getElementById('image').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Validate file size (2MB max)
-                if (file.size > 2 * 1024 * 1024) {
-                    showMessage('Ukuran file terlalu besar. Maksimal 2MB.', 'error');
-                    this.value = '';
-                    return;
-                }
+            const files = e.target.files;
+            
+            if (files.length === 0) {
+                document.getElementById('image-preview').classList.add('hidden');
+                return;
+            }
+            
+            if (files.length > 3) {
+                showMessage('Maksimal 3 foto yang dapat diupload.', 'error');
+                this.value = '';
+                document.getElementById('image-preview').classList.add('hidden');
+                return;
+            }
 
+            let hasError = false;
+            for (let file of files) {
+                if (file.size > 1024 * 1024) { // 1MB
+                    showMessage('Ukuran file maksimal 1MB per foto.', 'error');
+                    hasError = true;
+                    break;
+                }
+            }
+            
+            if (hasError) {
+                this.value = '';
+                document.getElementById('image-preview').classList.add('hidden');
+                return;
+            }
+
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+            
+            for (let file of files) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const preview = document.getElementById('image-preview');
-                    preview.querySelector('img').src = e.target.result;
-                    preview.classList.remove('hidden');
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-32 object-cover rounded-md';
+                    preview.appendChild(img);
                 };
                 reader.readAsDataURL(file);
             }
+            
+            preview.classList.remove('hidden');
         });
 
         // Image Preview for 'proof' field
@@ -400,6 +441,7 @@
                     method: 'POST',
                     body: formData,
                     headers: {
+                        'Accept': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
                 });

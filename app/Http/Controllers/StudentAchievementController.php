@@ -117,8 +117,10 @@ class StudentAchievementController extends Controller
         // Validate the request
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'organizer' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'required|array|min:1|max:3',
+            'image.*' => 'image|mimes:jpeg,png,jpg|max:1024',
             'proof' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'awarded_at' => 'nullable|date',
             'achievement_type_id' => 'required|exists:achievement_types,id',
@@ -127,14 +129,18 @@ class StudentAchievementController extends Controller
             'student_nims' => 'required|string',
         ], [
             'name.required' => 'Nama prestasi wajib diisi',
+            'organizer.required' => 'Penyelenggara wajib diisi',
             'description.required' => 'Deskripsi wajib diisi',
             'image.required' => 'Foto dokumentasi wajib diupload',
-            'image.image' => 'File harus berupa gambar',
-            'image.mimes' => 'Format gambar harus JPG, JPEG, atau PNG',
-            'image.max' => 'Ukuran gambar maksimal 1MB',
+            'image.array' => 'Foto dokumentasi harus berupa array file',
+            'image.min' => 'Minimal 1 foto dokumentasi',
+            'image.max' => 'Maksimal 3 foto dokumentasi',
+            'image.*.image' => 'File harus berupa gambar',
+            'image.*.mimes' => 'Format gambar harus JPG, JPEG, atau PNG',
+            'image.*.max' => 'Ukuran gambar maksimal 1MB',
             'proof.image' => 'File sertifikat harus berupa gambar',
             'proof.mimes' => 'Format sertifikat harus JPG, JPEG, atau PNG',
-            'proof.max' => 'Ukuran sertifikat maksimal 1MB',
+            'proof.max' => 'Ukuran sertifikat maksimal 2MB',
             'achievement_type_id.required' => 'Jenis prestasi wajib dipilih',
             'achievement_category_id.required' => 'Kategori prestasi wajib dipilih',
             'achievement_level_id.required' => 'Tingkat prestasi wajib dipilih',
@@ -157,8 +163,11 @@ class StudentAchievementController extends Controller
         }
 
         try {
-            // Handle image upload
-            $imagePath = $request->file('image')->store('ifbangga-image', 'public');
+            // Handle image uploads
+            $imagePaths = [];
+            foreach ($request->file('image') as $file) {
+                $imagePaths[] = $file->store('ifbangga-image', 'public');
+            }
 
             // Handle proof upload if exists
             $proofPath = null;
@@ -169,8 +178,9 @@ class StudentAchievementController extends Controller
             // Create achievement with approval set to null for admin verification
             $achievement = Achievement::create([
                 'name' => $validated['name'],
+                'organizer' => $validated['organizer'],
                 'description' => $validated['description'],
-                'image' => $imagePath,
+                'images' => $imagePaths,
                 'proof' => $proofPath,
                 'awarded_at' => $validated['awarded_at'] ?? null,
                 'achievement_type_id' => $validated['achievement_type_id'],
@@ -189,8 +199,12 @@ class StudentAchievementController extends Controller
 
         } catch (\Exception $e) {
             // Clean up uploaded files if database operation fails
-            if (isset($imagePath) && \Storage::disk('public')->exists($imagePath)) {
-                \Storage::disk('public')->delete($imagePath);
+            if (isset($imagePaths)) {
+                foreach ($imagePaths as $path) {
+                    if (\Storage::disk('public')->exists($path)) {
+                        \Storage::disk('public')->delete($path);
+                    }
+                }
             }
             if (isset($proofPath) && \Storage::disk('public')->exists($proofPath)) {
                 \Storage::disk('public')->delete($proofPath);

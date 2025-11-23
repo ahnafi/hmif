@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('images');
             $table->string('proof');
             $table->date('awarded_at');
-            $table->boolean('approval')->default(null);
+            $table->boolean('approval')->nullable()->default(null);
             $table->foreignId('achievement_type_id')->constrained('achievement_types');
             $table->foreignId('achievement_category_id')->constrained('achievement_categories');
             $table->foreignId('achievement_level_id')->constrained('achievement_levels');
