@@ -61,6 +61,7 @@ class AchievementResource extends Resource
                     ->openable()
                     ->maxSize(1024)
                     ->directory('ifbangga-proof')
+                    ->required()
                     ->columnSpanFull(),
                 Forms\Components\DatePicker::make('awarded_at')
                     ->required()
@@ -93,6 +94,7 @@ class AchievementResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('organizer')
                     ->label('Penyelenggara')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('students.nim')
                     ->label('Mahasiswa')
@@ -102,6 +104,7 @@ class AchievementResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('awarded_at')
                     ->label('Tanggal Penghargaan')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->date()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('approval')
@@ -109,18 +112,22 @@ class AchievementResource extends Resource
                     ->boolean(),
                 Tables\Columns\TextColumn::make('achievementType.name')
                     ->label('Tipe Prestasi')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('achievementCategory.name')
                     ->label('Kategori Prestasi')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('achievementLevel.name')
                     ->label('Tingkat Prestasi')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Tanggal Submit')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -130,7 +137,7 @@ class AchievementResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('Approve')
@@ -153,10 +160,12 @@ class AchievementResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

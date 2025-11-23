@@ -142,10 +142,10 @@
                     <!-- Certificate Upload (Sertifikat) -->
                     <div>
                         <label for="proof" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Sertifikat/Bukti Prestasi
+                            Sertifikat/Bukti Prestasi <span class="text-red-500">*</span>
                         </label>
                         <p class="text-sm text-gray-500 mb-2">Upload sertifikat atau bukti prestasi (format: JPG, PNG, JPEG, max 2MB)</p>
-                        <input type="file" id="proof" name="proof" accept="image/jpeg,image/png,image/jpg"
+                        <input type="file" id="proof" name="proof" required accept="image/jpeg,image/png,image/jpg"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-white dark:text-black">
                         <div id="proof-preview" class="mt-2 hidden">
                             <img src="" alt="Preview" class="w-full max-w-md h-48 object-cover rounded-md">
@@ -155,9 +155,9 @@
                     <!-- Awarded Date -->
                     <div>
                         <label for="awarded_at" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Tanggal Perolehan Prestasi
+                            Tanggal Perolehan Prestasi <span class="text-red-500">*</span>
                         </label>
-                        <input type="date" id="awarded_at" name="awarded_at"
+                        <input type="date" id="awarded_at" name="awarded_at" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black">
                     </div>
 
@@ -436,7 +436,7 @@
             
             try {
                 const formData = new FormData(this);
-                
+
                 const response = await fetch('{{ route("student.achievements.create") }}', {
                     method: 'POST',
                     body: formData,

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Award, Calendar, ChevronLeft, ChevronRight, Eye, Medal, Plus, Search, Trophy, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { GalleryModal } from '@/components/gallery-modal';
 
 interface Student {
     id: number;
@@ -90,8 +91,13 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
     const [selectedCategory, setSelectedCategory] = useState(filters.category || 'all');
     const [selectedLevel, setSelectedLevel] = useState(filters.level || 'all');
     const [selectedYear, setSelectedYear] = useState(filters.year || 'all');
+    
+    // Gallery Modal State
+    const [galleryOpen, setGalleryOpen] = useState(false);
+    const [galleryImages, setGalleryImages] = useState<string[]>([]);
+    const [galleryTitle, setGalleryTitle] = useState('');
 
-    console.log("Students Achievements:", achievements);
+    // console.log("Students Achievements:", achievements);
 
     // Debounced search
     const debouncedSearch = useDebouncedCallback(() => {
@@ -100,7 +106,16 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
 
     useEffect(() => {
         debouncedSearch();
-    }, [searchTerm]);
+    }, [searchTerm, debouncedSearch]);
+
+    const handleOpenGallery = (images: string[] | string | undefined, title: string) => {
+        if (!images) return;
+        
+        const imageArray = Array.isArray(images) ? images : [images];
+        setGalleryImages(imageArray);
+        setGalleryTitle(title);
+        setGalleryOpen(true);
+    };
 
     const handleFilter = () => {
         router.get(
@@ -163,7 +178,7 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                 <div className="flex flex-1 justify-between sm:hidden">
                     {achievements.links[0]?.url && (
                         <Link
-                            href={achievements.links[0].url}
+                            href={achievements.links[0].url || '#'}
                             className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             Previous
@@ -171,7 +186,7 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                     )}
                     {achievements.links[achievements.links.length - 1]?.url && (
                         <Link
-                            href={achievements.links[achievements.links.length - 1].url}
+                            href={achievements.links[achievements.links.length - 1].url || '#'}
                             className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                         >
                             Next
@@ -579,18 +594,18 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                                                 <span>{formatDate(achievement.awarded_at)}</span>
                                             </div>
 
-                                            {/* Proof Link */}
-                                            {achievement.proof && (
-                                                <a
-                                                    href={`/storage/${achievement.proof}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
+                                            {/* Photo Gallery Button */}
+                                            {achievement.images && achievement.images.length > 0 ? (
+                                                <button
+                                                    onClick={() => {
+                                                        handleOpenGallery(achievement.images, achievement.name);
+                                                    }}
                                                     className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-imphnen-base to-blue-imphnen-secondary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
                                                 >
                                                     <Eye className="h-4 w-4" />
-                                                    Lihat Bukti
-                                                </a>
-                                            )}
+                                                    Lihat Foto
+                                                </button>
+                                            ) : null}
                                         </div>
                                     </motion.div>
                                 ))}
@@ -656,6 +671,14 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                     </motion.div>
                 </div>
             </section>
+
+            {/* Gallery Modal */}
+            <GalleryModal
+                isOpen={galleryOpen}
+                onClose={() => setGalleryOpen(false)}
+                images={galleryImages}
+                title={galleryTitle}
+            />
         </Layout>
     );
 }
