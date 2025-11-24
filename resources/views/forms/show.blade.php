@@ -15,7 +15,7 @@
             <!-- Form Header -->
             <div class="mb-6">
                 @if($form->thumbnail)
-                    <img src="{{ Storage::url($form->thumbnail) }}" alt="{{ $form->title }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <img src="{{ Storage::url($form->thumbnail) }}" alt="{{ $form->title }}" class="w-full h-auto max-h-64 object-cover rounded-lg mb-4">
                 @endif
                 
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $form->title }}</h1>
