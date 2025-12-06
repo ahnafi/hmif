@@ -7,11 +7,14 @@ use App\Models\AchievementCategory;
 use App\Models\AchievementLevel;
 use App\Models\AchievementType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class StudentAchievementController extends Controller
 {
     public function index(Request $request)
     {
+        $cacheKey = 'achievements_' . md5(serialize($request->all()) . $request->get('page', 1));
+        
         $query = Achievement::with([
             'achievementType',
             'achievementCategory',
@@ -51,23 +54,24 @@ class StudentAchievementController extends Controller
             $query->whereYear('awarded_at', $request->get('year'));
         }
 
-        $achievements = $query->orderBy('awarded_at', 'desc')
-            ->paginate(9)
-            ->withQueryString();
+        $data = Cache::remember($cacheKey, 3600, function() use ($query, $request) {
+            $achievements = $query->orderBy('awarded_at', 'desc')
+                ->paginate(9)
+                ->withQueryString();
 
-        $types = AchievementType::orderBy('name')->get();
-        $categories = AchievementCategory::orderBy('name')->get();
-        $levels = AchievementLevel::orderBy('name')->get();
+            $types = AchievementType::orderBy('name')->get();
+            $categories = AchievementCategory::orderBy('name')->get();
+            $levels = AchievementLevel::orderBy('name')->get();
 
-        // Get available years
-        $years = Achievement::selectRaw('YEAR(awarded_at) as year')
-            ->where('approval', true)
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->pluck('year');
+            // Get available years
+            $years = Achievement::selectRaw('YEAR(awarded_at) as year')
+                ->where('approval', true)
+                ->distinct()
+                ->orderBy('year', 'desc')
+                ->pluck('year');
 
-        // Get top 3 students by achievement count
-        $topStudents = \DB::table('achievement_student')
+            // Get top 3 students by achievement count
+            $topStudents = \DB::table('achievement_student')
             ->join('achievements', 'achievement_student.achievement_id', '=', 'achievements.id')
             ->join('students', 'achievement_student.student_id', '=', 'students.id')
             ->where('achievements.approval', true)
@@ -82,14 +86,24 @@ class StudentAchievementController extends Controller
             ->orderBy('students.nim', 'asc')
             ->limit(3)
             ->get();
+            
+            return [
+                'achievements' => $achievements,
+                'types' => $types,
+                'categories' => $categories,
+                'levels' => $levels,
+                'years' => $years,
+                'topStudents' => $topStudents,
+            ];
+        });
 
         return inertia('if-bangga', [
-            'achievements' => $achievements,
-            'types' => $types,
-            'categories' => $categories,
-            'levels' => $levels,
-            'years' => $years,
-            'topStudents' => $topStudents,
+            'achievements' => $data['achievements'],
+            'types' => $data['types'],
+            'categories' => $data['categories'],
+            'levels' => $data['levels'],
+            'years' => $data['years'],
+            'topStudents' => $data['topStudents'],
             'filters' => [
                 'search' => $request->get('search'),
                 'type' => $request->get('type', 'all'),
@@ -102,12 +116,18 @@ class StudentAchievementController extends Controller
 
     public function form()
     {
-        $types = AchievementType::orderBy('name')->get();
-        $categories = AchievementCategory::orderBy('name')->get();
-        $levels = AchievementLevel::orderBy('name')->get();
-        $students = \App\Models\Student::select('id', 'nim', 'name')
-            ->orderBy('nim')
-            ->get();
+        $data = Cache::remember('achievement_form_data', 21600, function() {
+            $types = AchievementType::orderBy('name')->get();
+            $categories = AchievementCategory::orderBy('name')->get();
+            $levels = AchievementLevel::orderBy('name')->get();
+            $students = \App\Models\Student::select('id', 'nim', 'name')
+                ->orderBy('nim')
+                ->get();
+                
+            return compact('types', 'categories', 'levels', 'students');
+        });
+        
+        extract($data);
 
         return view('forms.achievement', compact(['types', 'categories', 'levels', 'students']));
     }
