@@ -13,7 +13,7 @@ class ArticleController extends Controller
     {
         $cacheKey = 'articles_' . md5(serialize($request->all()) . $request->get('page', 1));
         
-        $data = Cache::remember($cacheKey, 7200, function() use ($request) {
+        $data = Cache::remember($cacheKey, 3600, function() use ($request) {
             $query = Article::with(['author', 'category']);
 
             // Filter by search term
@@ -59,7 +59,7 @@ class ArticleController extends Controller
     {
         $cacheKey = 'article_' . $article->id;
         
-        $data = Cache::remember($cacheKey, 7200, function() use ($article) {
+        $data = Cache::remember($cacheKey, 3600, function() use ($article) {
             $article->load(['author', 'category']);
             
             // Get related articles (same category, excluding current article)
