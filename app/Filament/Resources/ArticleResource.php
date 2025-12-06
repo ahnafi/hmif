@@ -71,6 +71,7 @@ class ArticleResource extends Resource
                 Forms\Components\RichEditor::make('content')
                     ->label('Konten')
                     ->required()
+                    ->fileAttachmentsDirectory('articles')
                     ->columnSpanFull(),
             ]);
     }
