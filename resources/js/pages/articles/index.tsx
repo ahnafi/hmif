@@ -4,7 +4,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Head, Link, router } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Eye, Filter, Newspaper, Search, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 interface Author {
@@ -58,26 +58,31 @@ interface ArticlesProps {
 export default function ArticlesIndex({ articles, categories, filters }: ArticlesProps) {
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [selectedCategory, setSelectedCategory] = useState(filters.category || 'all');
+    const isInitialRender = useRef(true);
 
     // Debounced search to avoid too many requests
-    const debouncedSearch = useDebouncedCallback((value: string) => {
+    const debouncedSearch = useDebouncedCallback((value: string, category: string) => {
         router.get(
             '/berita',
             {
                 search: value || undefined,
-                category: selectedCategory === 'all' ? undefined : selectedCategory,
+                category: category === 'all' ? undefined : category,
             },
             {
-                preserveState: true,
+                preserveState: false,
                 replace: true,
             },
         );
     }, 500);
 
-    // Handle search input change
+    // Handle search input change - only trigger on user input, not on prop updates
     useEffect(() => {
-        debouncedSearch(searchTerm);
-    }, [searchTerm, debouncedSearch]);
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
+        debouncedSearch(searchTerm, selectedCategory);
+    }, [searchTerm, selectedCategory, debouncedSearch]);
 
     // Handle category filter change
     const handleCategoryChange = (category: string) => {
@@ -89,7 +94,7 @@ export default function ArticlesIndex({ articles, categories, filters }: Article
                 category: category === 'all' ? undefined : category,
             },
             {
-                preserveState: true,
+                preserveState: false,
                 replace: true,
             },
         );
@@ -136,7 +141,7 @@ export default function ArticlesIndex({ articles, categories, filters }: Article
                 <div className="flex flex-1 justify-between sm:hidden">
                     {articles.links[0]?.url && (
                         <Link
-                            href={articles.links[0].url}
+                            href={articles.links[0].url || ''}
                             className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                         >
                             Sebelumnya
@@ -144,7 +149,7 @@ export default function ArticlesIndex({ articles, categories, filters }: Article
                     )}
                     {articles.links[articles.links.length - 1]?.url && (
                         <Link
-                            href={articles.links[articles.links.length - 1].url}
+                            href={articles.links[articles.links.length - 1].url || ''}
                             className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                         >
                             Selanjutnya
