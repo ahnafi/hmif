@@ -1,7 +1,7 @@
 import Layout from '@/components/layout';
 import { Head, Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Check, Clock, Copy, Facebook, Phone, Tag, Twitter, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Check, Clock, Copy, Facebook, Phone, Twitter, User } from 'lucide-react';
 import { useState } from 'react';
 
 interface Author {
@@ -333,29 +333,12 @@ export default function ArticleShow({
                                                 transition={{ duration: 0.6, delay: index * 0.1 }}
                                             >
                                                 <Link href={`/berita/${relatedArticle.slug}`} className="group block">
-                                                    <div className="flex gap-3">
-                                                        <div className="flex-shrink-0">
-                                                            {relatedArticle.thumbnail ? (
-                                                                <img
-                                                                    src={relatedArticle.thumbnail}
-                                                                    alt={relatedArticle.title}
-                                                                    className="h-12 w-16 rounded object-cover"
-                                                                />
-                                                            ) : (
-                                                                <div className="flex h-12 w-16 items-center justify-center rounded bg-gradient-to-br from-blue-imphnen-base to-blue-imphnen-secondary">
-                                                                    <Tag className="h-4 w-4 text-white" />
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <div className="min-w-0 flex-1">
-                                                            <h4 className="line-clamp-2 text-sm font-medium text-dark-base transition-colors duration-300 group-hover:text-blue-imphnen-base dark:text-light-base">
-                                                                {truncateTitle(relatedArticle.title)}
-                                                            </h4>
-                                                            <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                                                {formatDate(relatedArticle.created_at)}
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                    <h4 className="line-clamp-2 text-sm font-medium text-dark-base transition-colors duration-300 group-hover:text-blue-imphnen-base dark:text-light-base">
+                                                        {truncateTitle(relatedArticle.title)}
+                                                    </h4>
+                                                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                                        {formatDate(relatedArticle.created_at)}
+                                                    </p>
                                                 </Link>
                                             </motion.div>
                                         ))}
