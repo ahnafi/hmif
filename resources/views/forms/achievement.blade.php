@@ -126,15 +126,21 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:text-black"></textarea>
                     </div>
 
-                    <!-- Image Upload (Bukti Pertama) -->
+                    <!-- Image Upload -->
                     <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Foto/Dokumentasi Prestasi (Diri atau Tim) <span class="text-red-500">*</span>
                         </label>
                         <p class="text-sm text-gray-500 mb-2">Upload foto dokumentasi prestasi (format: JPG, PNG, JPEG, maksimal 3 foto, 1MB per foto)</p>
-                        <input type="file" id="image" name="image[]" required multiple accept="image/jpeg,image/png,image/jpg"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-white dark:text-black">
-                        <div id="image-preview" class="mt-2 hidden grid grid-cols-3 gap-2">
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                            <span id="image-count">0</span>/3 foto dipilih
+                        </p>
+                        <input type="file" id="image" accept="image/jpeg,image/png,image/jpg" class="hidden">
+                        <button type="button" id="add-image-btn"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
+                            + Tambah Foto
+                        </button>
+                        <div id="image-preview" class="mt-3 hidden grid grid-cols-3 gap-2">
                             <!-- Images will be appended here -->
                         </div>
                     </div>
@@ -346,53 +352,95 @@
         // Initial UI update
         updateUI();
 
-        // Image Preview for 'image' field
-        document.getElementById('image').addEventListener('change', function(e) {
-            const files = e.target.files;
-            
-            if (files.length === 0) {
-                document.getElementById('image-preview').classList.add('hidden');
+        // Image management
+        let selectedImages = [];
+        const imageInput = document.getElementById('image');
+        const addImageBtn = document.getElementById('add-image-btn');
+        const imagePreview = document.getElementById('image-preview');
+        const imageCount = document.getElementById('image-count');
+
+        addImageBtn.addEventListener('click', function() {
+            if (selectedImages.length >= 3) {
+                showMessage('Maksimal 3 foto yang dapat diupload.', 'error');
                 return;
             }
-            
-            if (files.length > 3) {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate file size (1MB max)
+            if (file.size > 1024 * 1024) {
+                showMessage('Ukuran file maksimal 1MB per foto.', 'error');
+                this.value = '';
+                return;
+            }
+
+            // Check if already at max
+            if (selectedImages.length >= 3) {
                 showMessage('Maksimal 3 foto yang dapat diupload.', 'error');
                 this.value = '';
-                document.getElementById('image-preview').classList.add('hidden');
                 return;
             }
 
-            let hasError = false;
-            for (let file of files) {
-                if (file.size > 1024 * 1024) { // 1MB
-                    showMessage('Ukuran file maksimal 1MB per foto.', 'error');
-                    hasError = true;
-                    break;
-                }
-            }
+            // Add to selected images
+            selectedImages.push(file);
+            this.value = ''; // Reset input
+            updateImagePreview();
+        });
+
+        function updateImagePreview() {
+            imageCount.textContent = selectedImages.length;
             
-            if (hasError) {
-                this.value = '';
-                document.getElementById('image-preview').classList.add('hidden');
+            if (selectedImages.length === 0) {
+                imagePreview.style.display = 'none';
+                addImageBtn.disabled = false;
                 return;
             }
 
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
-            
-            for (let file of files) {
+            imagePreview.style.display = 'grid';
+            imagePreview.innerHTML = '';
+
+            selectedImages.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const container = document.createElement('div');
+                    container.className = 'relative group';
+                    
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className = 'w-full h-32 object-cover rounded-md';
-                    preview.appendChild(img);
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity';
+                    removeBtn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                    removeBtn.onclick = function() {
+                        removeImage(index);
+                    };
+                    
+                    container.appendChild(img);
+                    container.appendChild(removeBtn);
+                    imagePreview.appendChild(container);
                 };
                 reader.readAsDataURL(file);
+            });
+
+            // Update button state
+            addImageBtn.disabled = selectedImages.length >= 3;
+            if (selectedImages.length >= 3) {
+                addImageBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                addImageBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
-            
-            preview.classList.remove('hidden');
-        });
+        }
+
+        function removeImage(index) {
+            selectedImages.splice(index, 1);
+            updateImagePreview();
+        }
 
         // Image Preview for 'proof' field
         document.getElementById('proof').addEventListener('change', function(e) {
@@ -425,6 +473,12 @@
                 return;
             }
 
+            // Validate at least one image is selected
+            if (selectedImages.length === 0) {
+                showMessage('Pilih minimal 1 foto dokumentasi', 'error');
+                return;
+            }
+
             const submitBtn = this.querySelector('button[type="submit"]');
             const submitText = document.getElementById('submit-text');
             const loadingText = document.getElementById('loading-text');
@@ -436,6 +490,11 @@
             
             try {
                 const formData = new FormData(this);
+                
+                // Add selected images to formData
+                selectedImages.forEach((file, index) => {
+                    formData.append('image[]', file);
+                });
 
                 const response = await fetch('{{ route("student.achievements.create") }}', {
                     method: 'POST',
@@ -451,8 +510,13 @@
                 if (response.ok) {
                     showMessage('Prestasi berhasil dikirim! Data Anda akan diverifikasi oleh admin.', 'success');
                     this.reset();
-                    // Hide previews
-                    document.getElementById('image-preview').classList.add('hidden');
+                    // Clear selected students
+                    selectedStudents = [];
+                    updateUI();
+                    // Clear selected images
+                    selectedImages = [];
+                    updateImagePreview();
+                    // Hide proof preview
                     document.getElementById('proof-preview').classList.add('hidden');
                     
                     // Redirect after 2 seconds
