@@ -31,6 +31,7 @@ interface AchievementLevel {
 interface Achievement {
     id: number;
     name: string;
+    organizer: string;
     description?: string;
     images?: string[];
     proof?: string;
@@ -96,6 +97,7 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
     const [galleryOpen, setGalleryOpen] = useState(false);
     const [galleryImages, setGalleryImages] = useState<string[]>([]);
     const [galleryTitle, setGalleryTitle] = useState('');
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | null>(null);
 
     // console.log("Students Achievements:", achievements);
 
@@ -108,12 +110,12 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
         debouncedSearch();
     }, [searchTerm, debouncedSearch]);
 
-    const handleOpenGallery = (images: string[] | string | undefined, title: string) => {
-        if (!images) return;
+    const handleOpenGallery = (achievement: Achievement) => {
+        if (!achievement.images || achievement.images.length === 0) return;
         
-        const imageArray = Array.isArray(images) ? images : [images];
-        setGalleryImages(imageArray);
-        setGalleryTitle(title);
+        setGalleryImages(achievement.images);
+        setGalleryTitle(achievement.name);
+        setSelectedAchievement(achievement);
         setGalleryOpen(true);
     };
 
@@ -594,16 +596,16 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                                                 <span>{formatDate(achievement.awarded_at)}</span>
                                             </div>
 
-                                            {/* Photo Gallery Button */}
+                                            {/* View Details Button */}
                                             {achievement.images && achievement.images.length > 0 ? (
                                                 <button
                                                     onClick={() => {
-                                                        handleOpenGallery(achievement.images, achievement.name);
+                                                        handleOpenGallery(achievement);
                                                     }}
                                                     className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-imphnen-base to-blue-imphnen-secondary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
                                                 >
                                                     <Eye className="h-4 w-4" />
-                                                    Lihat Foto
+                                                    Lihat Detail
                                                 </button>
                                             ) : null}
                                         </div>
@@ -678,6 +680,7 @@ export default function IFBanggaPage({ achievements, types, categories, levels, 
                 onClose={() => setGalleryOpen(false)}
                 images={galleryImages}
                 title={galleryTitle}
+                achievement={selectedAchievement || undefined}
             />
         </Layout>
     );

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->dropColumn('image');
 
             $table->text('images')->after('description');
+            $table->boolean('approval')->nullable(false)->default(false)->change();
             $table->string('proof')->nullable(false)->change();
             $table->date('awarded_at')->nullable(false)->change();
         });
@@ -22,6 +23,7 @@ return new class extends Migration
         Schema::table('achievements', function (Blueprint $table) {
             $table->string('image');
             $table->dropColumn('images');
+            $table->boolean('approval')->nullable()->default(null)->change();
             $table->string('proof')->nullable()->change();
             $table->date('awarded_at')->nullable()->change();
         });
