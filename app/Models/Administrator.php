@@ -7,13 +7,26 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Administrator extends Model
 {
     use SoftDeletes;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($administrator) {
+            if ($administrator->image && Storage::exists($administrator->image)) {
+                Storage::delete($administrator->image);
+            }
+        });
+    }
+
     protected $fillable = [
         'name',
+        'image',
         'division_id'
     ];
 

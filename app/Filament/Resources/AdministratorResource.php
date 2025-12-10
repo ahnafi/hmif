@@ -32,6 +32,13 @@ class AdministratorResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Nama')
                     ->required(),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Gambar')
+                    ->image()
+                    ->imageEditor()
+                    ->columnSpanFull()
+                    ->maxSize(1024)
+                    ->directory('thumbnails'),
                 Forms\Components\Select::make('division_id')
                     ->label('Divisi')
                     ->relationship('division', 'name')
@@ -43,6 +50,9 @@ class AdministratorResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar')
+                    ->rounded(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable(),
