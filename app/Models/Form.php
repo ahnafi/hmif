@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class Form extends Model
 {
@@ -43,6 +45,12 @@ class Form extends Model
         static::creating(function ($form) {
             if (empty($form->slug)) {
                 $form->slug = Str::slug($form->title);
+            }
+        });
+
+        static::deleting(function ($form) {
+            if ($form->thumbnail && Storage::exists($form->thumbnail)) {
+                Storage::delete($form->thumbnail);
             }
         });
     }
