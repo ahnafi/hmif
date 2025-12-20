@@ -7,54 +7,54 @@ use App\Models\AchievementCategory;
 use App\Models\AchievementLevel;
 use App\Models\AchievementType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class StudentAchievementController extends Controller
 {
     public function index(Request $request)
     {
-        $cacheKey = 'achievements_' . md5(serialize($request->all()) . $request->get('page', 1));
-        
-        $query = Achievement::with([
-            'achievementType',
-            'achievementCategory',
-            'achievementLevel',
-            'students',
-        ])->where('approval', true);
+        $data = (function() use ($request) {
+            $query = Achievement::with([
+                'achievementType',
+                'achievementCategory',
+                'achievementLevel',
+                'students',
+            ])->where('approval', '=', 1); // Use 1 instead of true for boolean comparison
 
-        // Filter by search term
-        if ($request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'LIKE', "%{$search}%")
-                    ->orWhere('description', 'LIKE', "%{$search}%")
-                    ->orWhereHas('students', function ($studentQuery) use ($search) {
-                        $studentQuery->where('name', 'LIKE', "%{$search}%");
-                    });
-            });
-        }
+            // Filter by search term
+            if ($request->filled('search')) {
+                $search = $request->get('search');
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%")
+                        ->orWhere('description', 'LIKE', "%{$search}%")
+                        ->orWhereHas('students', function ($studentQuery) use ($search) {
+                            $studentQuery->where('name', 'LIKE', "%{$search}%");
+                        });
+                });
+            }
 
-        // Filter by type
-        if ($request->filled('type') && $request->get('type') !== 'all') {
-            $query->where('achievement_type_id', $request->get('type'));
-        }
+            // Filter by type
+            if ($request->filled('type') && $request->get('type') !== 'all') {
+                $query->where('achievement_type_id', $request->get('type'));
+            }
 
-        // Filter by category
-        if ($request->filled('category') && $request->get('category') !== 'all') {
-            $query->where('achievement_category_id', $request->get('category'));
-        }
+            // Filter by category
+            if ($request->filled('category') && $request->get('category') !== 'all') {
+                $query->where('achievement_category_id', $request->get('category'));
+            }
 
-        // Filter by level
-        if ($request->filled('level') && $request->get('level') !== 'all') {
-            $query->where('achievement_level_id', $request->get('level'));
-        }
+            // Filter by level
+            if ($request->filled('level') && $request->get('level') !== 'all') {
+                $query->where('achievement_level_id', $request->get('level'));
+            }
 
-        // Filter by year
-        if ($request->filled('year') && $request->get('year') !== 'all') {
-            $query->whereYear('awarded_at', $request->get('year'));
-        }
+            // Filter by year
+            if ($request->filled('year') && $request->get('year') !== 'all') {
+                $query->whereYear('awarded_at', $request->get('year'));
+            }
 
-        $data = Cache::remember($cacheKey, 3600, function() use ($query, $request) {
             $achievements = $query->orderBy('awarded_at', 'desc')
                 ->paginate(9)
                 ->withQueryString();
@@ -65,21 +65,21 @@ class StudentAchievementController extends Controller
 
             // Get available years
             $years = Achievement::selectRaw('YEAR(awarded_at) as year')
-                ->where('approval', true)
+                ->where('approval', '=', 1)
                 ->distinct()
                 ->orderBy('year', 'desc')
                 ->pluck('year');
 
             // Get top 3 students by achievement count
-            $topStudents = \DB::table('achievement_student')
+            $topStudents = DB::table('achievement_student')
             ->join('achievements', 'achievement_student.achievement_id', '=', 'achievements.id')
             ->join('students', 'achievement_student.student_id', '=', 'students.id')
-            ->where('achievements.approval', true)
+            ->where('achievements.approval', '=', 1)
             ->select(
                 'students.id',
                 'students.nim',
                 'students.name',
-                \DB::raw('COUNT(achievement_student.achievement_id) as achievement_count')
+                DB::raw('COUNT(achievement_student.achievement_id) as achievement_count')
             )
             ->groupBy('students.id', 'students.nim', 'students.name')
             ->orderByDesc('achievement_count')
@@ -95,7 +95,7 @@ class StudentAchievementController extends Controller
                 'years' => $years,
                 'topStudents' => $topStudents,
             ];
-        });
+        })();
 
         return inertia('if-bangga', [
             'achievements' => $data['achievements'],
@@ -116,18 +116,12 @@ class StudentAchievementController extends Controller
 
     public function form()
     {
-        $data = Cache::remember('achievement_form_data', 21600, function() {
-            $types = AchievementType::orderBy('name')->get();
-            $categories = AchievementCategory::orderBy('name')->get();
-            $levels = AchievementLevel::orderBy('name')->get();
-            $students = \App\Models\Student::select('id', 'nim', 'name')
-                ->orderBy('nim')
-                ->get();
-                
-            return compact('types', 'categories', 'levels', 'students');
-        });
-        
-        extract($data);
+        $types = AchievementType::orderBy('name')->get();
+        $categories = AchievementCategory::orderBy('name')->get();
+        $levels = AchievementLevel::orderBy('name')->get();
+        $students = \App\Models\Student::select('id', 'nim', 'name')
+            ->orderBy('nim')
+            ->get();
 
         return view('forms.achievement', compact(['types', 'categories', 'levels', 'students']));
     }
@@ -222,13 +216,13 @@ class StudentAchievementController extends Controller
             // Clean up uploaded files if database operation fails
             if (isset($imagePaths)) {
                 foreach ($imagePaths as $path) {
-                    if (\Storage::disk('public')->exists($path)) {
-                        \Storage::disk('public')->delete($path);
+                    if (Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->delete($path);
                     }
                 }
             }
-            if (isset($proofPath) && \Storage::disk('public')->exists($proofPath)) {
-                \Storage::disk('public')->delete($proofPath);
+            if (isset($proofPath) && Storage::disk('public')->exists($proofPath)) {
+                Storage::disk('public')->delete($proofPath);
             }
 
             return response()->json([

@@ -8,11 +8,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Achievement extends Model
 {
     use SoftDeletes;
     protected $table = 'achievements';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($achievement) {
+            // Delete images from storage when achievement is deleted
+            if ($achievement->images && is_array($achievement->images)) {
+                foreach ($achievement->images as $image) {
+                    if ($image && Storage::exists($image)) {
+                        Storage::delete($image);
+                    }
+                }
+            }
+        });
+    }
 
     protected $fillable = [
         'name',
