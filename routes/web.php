@@ -10,7 +10,6 @@ use App\Http\Controllers\IMagzController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentAchievementController;
-use App\Http\Controllers\YouTubeController;
 use Illuminate\Support\Facades\Route;
 
 // Company Profile
@@ -72,8 +71,6 @@ Route::prefix('forms')->group(function () {
     Route::post('/{slug}/submit', [FormController::class, 'submit'])->name('forms.submit')->middleware('throttle:3,2');
 });
 
-// YouTube Videos API
-Route::get('/api/youtube-videos', [YouTubeController::class, 'getLatestVideos']);
 
 // require __DIR__.'/settings.php';
 // require __DIR__.'/auth.php';
