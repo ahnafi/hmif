@@ -7,8 +7,10 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Set up PDF.js worker - Updated to match version 4.8.69
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+// // Set up PDF.js worker - Updated to match version 4.8.69
+// pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+
+pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs';
 
 interface Magazine {
     id: number;
@@ -64,13 +66,7 @@ function PDFThumbnail({ file }: { file: string }) {
                     }
                     className="flex justify-center"
                 >
-                    <Page
-                        pageNumber={1}
-                        width={300}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                        className="shadow-lg"
-                    />
+                    <Page pageNumber={1} width={300} renderTextLayer={false} renderAnnotationLayer={false} className="shadow-lg" />
                 </Document>
             </div>
             {numPages && (
@@ -386,7 +382,7 @@ export default function IMagzPage({ magazines }: IMagzProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[999] flex flex-col bg-black/95 backdrop-blur-sm top-0"
+                    className="fixed inset-0 top-0 z-[999] flex flex-col bg-black/95 backdrop-blur-sm"
                 >
                     {/* Header - Responsive */}
                     <div className="flex flex-col justify-between border-b border-gray-200 bg-white p-3 shadow-lg sm:flex-row sm:items-center sm:p-4 dark:border-gray-700 dark:bg-gray-800">
